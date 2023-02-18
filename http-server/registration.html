@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registeration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <style>
+        body{
+            background-color: rgb(135, 255, 185);
+        }
+        #form{
+            border: 2px solid rgb(170, 170, 170);
+            border-radius: 15px;
+            width: 50%;
+            /*padding: 3rem 1rem;*/
+            background-image: linear-gradient(45deg, rgb(33, 0, 53), rgb(33, 0, 110));
+            margin: 8% auto;
+            max-width: 600px;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            margin: 3rem 5rem;
+        }
+        input{
+            margin: 1rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 10px;
+        }
+        button{
+            margin: 2rem 1rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 10px;
+            background-image: linear-gradient(360deg, rgb(0, 100, 0), rgb(0, 235, 0));
+            color: white;
+        }
+        h1{
+            color: whitesmoke;
+            background-image: linear-gradient(45deg, rgb(33, 0, 53), rgb(33, 0, 110));
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+        .cust{
+            background-color: whitesmoke;
+            max-width: 800px;
+            border-radius: 15px;
+            margin: 2rem auto;
+        }
+        button:hover:enabled{
+            transform: scale3d(1.05,1.05,1.05);
+            transition-duration: 0.3s;
+        }
+        button:disabled{
+            opacity: 0.5;
+        }
+    </style>
+    <script>
+        let check = () => {
+            let sub = document.getElementById("submit")
+            sub.disabled = !(sub.disabled)
+        }
+        let store = () => {
+            var dob = new Date(document.getElementById("dob").value)
+            var curr = new Date()
+            var age = (curr.getFullYear() - dob.getFullYear())
+            if(curr.getMonth() - dob.getMonth() === 0){
+                if(curr.getDate() - dob.getDate() < 0)
+                    age--
+            }
+            else if(curr.getMonth() - dob.getMonth() < 0)
+                age--
+
+            if(isNaN(age) || age<18 || age>55){
+                alert("Age must be between 18 and 55!")
+                return
+            }
+            let toStore = JSON.parse(localStorage.getItem("user")) || []
+            toStore.push({
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value,
+                dob: document.getElementById("dob").value,
+                terms: document.getElementById("agree").checked
+            })
+            localStorage.setItem("user", JSON.stringify(toStore))
+        }
+    </script>
+</head>
+<body>
+    <div id="form">
+        <h1>Registration Form</h1>
+        <form onsubmit="store()">
+            <input type="text" name="name" id="name" placeholder="Username" required>
+            <input type="email" name="email" id="email" placeholder="Email Address" required>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <input type="date" name="dob" id="dob" required>
+            <label for="agree" style="color: white;"><input type="checkbox" name="agree" id="agree">I Agree to all the <strong>Terms and Conditions</strong>.</label>
+            <button type="submit" id="submit">SUBMIT</button>
+        </form>
+    </div>
+    <table class="table table-hover cust">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Dob</th>
+                <th>Accepted Terms?</th>
+            </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+    </table>
+    <script>
+        let rows = JSON.parse(localStorage.getItem("user"))
+        let container = document.getElementById("rows")
+        rows.forEach(user => {
+            let inner_container = document.createElement("tr")
+            let name = document.createElement("td")
+            name.innerText = user.name
+            let email = document.createElement("td")
+            email.innerText = user.email
+            let password = document.createElement("td")
+            password.innerText = user.password
+            let dob = document.createElement("td")
+            dob.innerText = user.dob
+            let terms = document.createElement("td")
+            terms.innerText = user.terms
+            inner_container.append(name, email, password, dob, terms)
+            container.appendChild(inner_container)
+        });
+    </script>
+</body>
+</html>
