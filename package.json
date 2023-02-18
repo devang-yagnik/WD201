@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "test": "cd ./todo-cli/ && npm test",
+    "lint-staged": "cd ./todo-cli/ && npx lint-staged"
+  },
+  "devDependencies": {
+    "jest": "^29.4.3",
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4"
+  }
+}
