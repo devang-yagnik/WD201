@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const http = require('http')
 const fs = require('fs')
 const args = require('minimist')(process.argv.slice(2))
