@@ -1,5 +1,6 @@
 // models/todo.js
 'use strict';
+const moment = require('moment/moment');
 const {
   Model, Op
 } = require('sequelize');
@@ -47,7 +48,6 @@ module.exports = (sequelize, DataTypes) => {
         where: {
           dueDate: {
             [Op.lt]: new Date(),
-            completed: false
           },
         },
         order: [["id", "ASC"]],
@@ -92,7 +92,12 @@ module.exports = (sequelize, DataTypes) => {
 
     displayableString() {
       let checkbox = this.completed ? "[x]" : "[ ]";
-      return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
+      //console.log("\n"+this.dueDate+" "+moment().format('YYYY-MM-D')+"\n")
+      let date =
+        this.dueDate === moment().format('YYYY-MM-D')
+          ? ""
+          : this.dueDate;
+      return `${this.id}. ${checkbox} ${this.title} ${date}`.trim();
     }
   }
   Todo.init({
