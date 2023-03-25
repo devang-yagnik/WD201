@@ -5,9 +5,11 @@ const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-app.get("/todos", () => {
+app.get("/todos", async (request, response) => {
   // response.send("hello world")
-  console.log("TOdo list");
+  console.log("Todo list");
+  const todoList = await Todo.getTodoList()
+  return response.json(todoList)
 });
 
 app.post("/todos", async (request, response) => {
@@ -37,8 +39,21 @@ app.put("/todos/:id/markAsCompleted", async (request, response) => {
   }
 });
 
-app.delete("todos/:id", (request) => {
+app.delete("/todos/:id", async (request, response) => {
   console.log("Delete a todo by ID: ", request.params.id);
+  // const todo = await Todo.findByPk(request.params.id);
+  try {
+    const todo = await Todo.findByPk(request.params.id);
+    if (todo) {
+      await todo.delete();
+      return response.json(true);
+    } else {
+      return response.json(false);
+    }
+  } catch (error) {
+    console.log(error);
+    return response.status(422).json(false);
+  }
 });
 
 module.exports = app;
