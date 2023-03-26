@@ -1,20 +1,43 @@
-<table class="table table-dark mx-auto w-75 table-striped table-hover">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Due Date</th>
-      <th scope="col">Completed</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% for(var i = 0; i<allTodos.length; i++){ %>
-    <tr>
-      <th scope="row"><%= i+1 %></th>
-      <td><%= allTodos[i].title %></td>
-      <td><%= allTodos[i].dueDate %></td>
-      <td><%= allTodos[i].completed %></td>
-    </tr>
-    <% } %>
-  </tbody>
-</table>
+<div class="mb-4">
+  <h2 class="h2 font-semibold p-1">Add Task</h2>
+  <form class="lg:flex mb-2 gap-3" action="/todos" method="post">
+    <input type="text" class="form-control flex-none w-25 sm:w-75 sm:mb-2" name="title" id="title" placeholder="What's next?" required>
+    <input type="date" class="form-control flex-none w-25 sm:w-75 sm:mb-2" name="dueDate" id="dueDate" required>
+    <button class="btn btn-success bg-green-500 flex-none text-gray-100 sm:mb-2" type="submit">Add</button>
+  </form>
+</div>
+<div>
+  <div class="mb-4">
+    <h5 class="text-2xl font-semibold my-2">Over Due<span class="mx-2 h-8 w-10 badge bg-primary"><%= overDueTodos.length %></span></h5>
+    <ul class="list-none">
+      <% overDueTodos.map((item) => { %>
+        <li class="mx-3 flex items-center todo-item w-full"><input type="checkbox" onchange="complete(<%= item.id %>)" <%= item.completed ? "checked disabled" : "" %> name="bill" id="bill"><label for="bill" class="ml-2 text-base"><%= item.title %></label><a class="trash hidden" href="#" onclick="deleteTodo(<%= item.id %>)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg></a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+  <div class="mb-4">
+    <h5 class="text-2xl font-semibold my-2">Due Today<span class="mx-2 h-8 w-10 badge bg-primary"><%= dueTodayTodos.length %></h5>
+    <ul class="list-none">
+      <% dueTodayTodos.map((item) => { %>
+        <li class="mx-3 flex items-center todo-item w-full"><input type="checkbox" onchange="complete(<%= item.id %>)" <%= item.completed ? "checked disabled" : "" %> name="bill" id="bill"><label for="bill" class="ml-2 text-base"><%= item.title %></label><a class="trash hidden" href="#" onclick="deleteTodo(<%= item.id %>)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg></a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+  <div class="mb-4 my-2">
+    <h5 class="text-2xl font-semibold">Due Later<span class="mx-2 h-8 w-10 badge bg-primary"><%= dueLaterTodos.length %></h5>
+    <ul class="list-none">
+      <% dueLaterTodos.map((item) => { %>
+        <li class="mx-3 flex items-center todo-item w-full"><input type="checkbox" onchange="complete(<%= item.id %>)" <%= item.completed ? "checked disabled" : "" %> name="bill" id="bill"><label for="bill" class="ml-2 text-base"><%= item.title %></label><a class="trash hidden" href="#" onclick="deleteTodo(<%= item.id %>)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg></a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
