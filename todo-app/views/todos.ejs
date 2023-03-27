@@ -8,7 +8,7 @@
 </div>
 <div class="flex justify-center flex-col lg:flex-row lg:justify-evenly items-center">
   <div class="mb-4">
-    <h5 class="h2 lg:text-2xl font-semibold my-2">Over Due<span class="mx-2 h-8 w-10 badge bg-primary"><%= overDueTodos.length %></span></h5>
+    <h5 title="Overdue" id="Overdue" class="h2 lg:text-2xl font-semibold my-2">Overdue<span id="count-overdue" class="mx-2 h-8 w-10 badge bg-primary"><%= overDueTodos.length %></span></h5>
     <ul class="list-none">
       <% overDueTodos.map((item) => { %>
         <li class="mx-3 flex items-center todo-item w-full"><input type="checkbox" onchange="complete(<%= item.id %>)" <%= item.completed ? "checked disabled" : "" %> name="bill" id="bill"><label for="bill" class="ml-2 h6 lg:text-base"><%= item.title %></label><a class="trash hidden" href="#" onclick="deleteTodo(<%= item.id %>)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
@@ -19,7 +19,7 @@
     </ul>
   </div>
   <div class="mb-4">
-    <h5 class="h2 lg:text-2xl font-semibold my-2">Due Today<span class="mx-2 h-8 w-10 badge bg-primary"><%= dueTodayTodos.length %></h5>
+    <h5 title="Due Today" id="Due Today" class="h2 lg:text-2xl font-semibold my-2">Due Today<span id="count-due-today" class="mx-2 h-8 w-10 badge bg-primary"><%= dueTodayTodos.length %></h5>
     <ul class="list-none">
       <% dueTodayTodos.map((item) => { %>
         <li class="mx-3 flex items-center todo-item w-full"><input type="checkbox" onchange="complete(<%= item.id %>)" <%= item.completed ? "checked disabled" : "" %> name="bill" id="bill"><label for="bill" class="ml-2 h6 lg:text-base"><%= item.title %></label><a class="trash hidden" href="#" onclick="deleteTodo(<%= item.id %>)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
@@ -30,7 +30,7 @@
     </ul>
   </div>
   <div class="mb-4 my-2">
-    <h5 class="h2 lg:text-2xl font-semibold">Due Later<span class="mx-2 h-8 w-10 badge bg-primary"><%= dueLaterTodos.length %></h5>
+    <h5 title="Due Later" id="Due Later" class="h2 lg:text-2xl font-semibold">Due Later<span id="count-due-later" class="mx-2 h-8 w-10 badge bg-primary"><%= dueLaterTodos.length %></h5>
     <ul class="list-none">
       <% dueLaterTodos.map((item) => { %>
         <li class="mx-3 flex items-center todo-item w-full"><input type="checkbox" onchange="complete(<%= item.id %>)" <%= item.completed ? "checked disabled" : "" %> name="bill" id="bill"><label for="bill" class="ml-2 h6 lg:text-base"><%= item.title %></label><a class="trash hidden" href="#" onclick="deleteTodo(<%= item.id %>)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
