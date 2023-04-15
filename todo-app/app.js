@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 app.use(bodyParser.json());
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.set("view engine", "ejs")
 
@@ -16,9 +16,10 @@ app.get("/", async (request, response) => {
   const overDueTodos = await Todo.overdue()
   const dueTodayTodos = await Todo.dueToday()
   const dueLaterTodos = await Todo.dueLater()
+  const completedTodos = await Todo.completed()
   if(request.accepts("html")){
     response.render('index', {
-      overDueTodos, dueTodayTodos, dueLaterTodos
+      overDueTodos, dueTodayTodos, dueLaterTodos, completedTodos
     })
   }
   else{
@@ -60,17 +61,18 @@ app.post("/todos", async (request, response) => {
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async (request, response) => {
+app.put("/todos/:id", async (request, response) => {
   console.log("We have to update a todo with ID:", request.params.id);
   const todo = await Todo.findByPk(request.params.id);
   try {
-    const updatedTodo = await todo.markAsCompleted();
+    const updatedTodo = await todo.update({ completed: request.body.completed });
     return response.json(updatedTodo);
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
   }
 });
+
 
 app.delete("/todos/:id", async (request, response) => {
   console.log("Delete a todo by ID: ", request.params.id);

@@ -37,12 +37,15 @@ function deleteTodo(id) {
     .catch(error => console.error(error));
 }
 // eslint-disable-next-line no-unused-vars
-function complete(id) {
-  fetch(`/todos/${id}/markAsCompleted`, { method: "put" })
+function complete(id, status) {
+  fetch(`/todos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ completed: status })
+  })
     .then(response => response.json())
     .then(data => {
       if (data) {
-        // eslint-disable-next-line no-self-assign
         location.reload(true);
       } else {
         console.log("Todo not found");
