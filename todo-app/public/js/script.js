@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
+const token = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let toggle = () => {
   const header = document.getElementsByTagName('header')[0]
   const footer = document.getElementsByTagName('footer')[0]
@@ -22,34 +24,27 @@ let toggle = () => {
     // footer.classList.replace('text-stone-100', 'text-stone-600')
   }
 }
-// eslint-disable-next-line no-unused-vars
+
 function deleteTodo(id) {
-  fetch(`/todos/${id}`, { method: "DELETE" })
-    .then(response => response.json())
-    .then(data => {
-      if (data === true) {
-        // eslint-disable-next-line no-self-assign
-        location.reload(true);
-      } else {
-        console.log("Todo not found");
-      }
-    })
-    .catch(error => console.error(error));
+  fetch(`/todos/${id}`, { method: "DELETE", headers: {"Content-Type":"application/json"},
+  body: JSON.stringify({
+  _csrf : token
+  })
+})
+.then(() => {
+  window.location.reload();
+})
+.catch(error => console.error(error));
 }
-// eslint-disable-next-line no-unused-vars
+
 function complete(id, status) {
   fetch(`/todos/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ completed: status })
+    body: JSON.stringify({ _csrf : token, completed: status })
   })
-    .then(response => response.json())
-    .then(data => {
-      if (data) {
-        location.reload(true);
-      } else {
-        console.log("Todo not found");
-      }
+    .then(() => {
+      window.location.reload();
     })
     .catch(error => console.error(error));
 }

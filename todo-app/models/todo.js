@@ -1,79 +1,71 @@
-"use strict";
-const { Model, Op } = require("sequelize");
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+'use strict';
+const { Model, Op } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
     }
 
     static addTodo({ title, dueDate }) {
-      return this.create({ title: title, dueDate: dueDate, completed: false });
+      return this.create({ title, dueDate, completed: false });
     }
 
-    setCompletionStatus(status) {
-      return this.update({ completed: status });
-    }
-    delete() {
-      return this.destroy()
-    }
-    static getTodoList() {
-      return this.findAll()
+    static async getTodoList() {
+      return this.findAll();
     }
 
-    static async completed() {
-      // FILL IN HERE TO RETURN OVERDUE ITEMS
-      return Todo.findAll({
-        where: {
-          completed: true
-        },
-        order: [["id", "ASC"]],
+    setCompletionStatus = async function(completed) {
+      this.completed = completed;
+      await this.save();
+      return this
+    };
+    
+
+    static async getCompletedTodos() {
+      return this.findAll({
+        where: { completed: true },
+        order: [['id', 'ASC']],
       });
     }
 
-    static async overdue() {
-      // FILL IN HERE TO RETURN OVERDUE ITEMS
-      return Todo.findAll({
+    static async getOverdueTodos() {
+      return this.findAll({
         where: {
-          dueDate: {
-            [Op.lt]: new Date(),
-          },
-          completed: false
+          dueDate: { [Op.lt]: new Date() },
+          completed: false,
         },
-        order: [["id", "ASC"]],
+        order: [['id', 'ASC']],
       });
     }
 
-    static async dueToday() {
-      // FILL IN HERE TO RETURN ITEMS DUE tODAY
-      return Todo.findAll({
+    static async getDueTodayTodos() {
+      const today = new Date();
+      return this.findAll({
         where: {
           dueDate: {
-            [Op.eq]: new Date(),
+            [Op.gte]: today,
+            [Op.lt]: new Date(today.getTime() + 24 * 60 * 60 * 1000),
           },
-          completed: false
+          completed: false,
         },
-        order: [["id", "ASC"]],
+        order: [['id', 'ASC']],
       });
     }
 
-    static async dueLater() {
-      // FILL IN HERE TO RETURN ITEMS DUE LATER
-      return Todo.findAll({
+    static async getDueLaterTodos() {
+      return this.findAll({
         where: {
-          dueDate: {
-            [Op.gt]: new Date(),
-          },
-          completed: false
+          dueDate: { [Op.gt]: new Date() },
+          completed: false,
         },
-        order: [["id", "ASC"]],
+        order: [['id', 'ASC']],
       });
     }
   }
+
   Todo.init(
     {
       title: DataTypes.STRING,
@@ -82,8 +74,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Todo",
+      modelName: 'Todo',
     }
   );
+
   return Todo;
 };
