@@ -8,7 +8,6 @@
     "start:prod": "node index.js",
     "pretest": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create",
     "test": "cross-env NODE_ENV=test jest",
-    "prepare": "husky install"
   },
   "lint-staged": {
     "*.js": [
