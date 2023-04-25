@@ -22,14 +22,23 @@
       <a href="/signout" class="btn btn-warning absolute top-12 right-12 md:absolute md:top-8 md:left-0 md:w-24">Sign-Out</a>
     </div>
   </header>  
+  
+  <% if(messages && messages.error && messages.error.length > 0)  { %>
+    <% for(var i=0; i<messages.error.length; i++) { %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-3 py-2 m-auto rounded relative text-center" role="alert">
+        <strong class="font-bold">Holy smokes!</strong>
+        <span class="block sm:inline"><%= messages.error[i] %></span>
+      </div>
+    <% } %>
+  <% } %>
 
   <main class="m-5 mb-auto">
     <div class="mb-4">
       <h2 class="h2 font-semibold p-1">Add Task</h2>
       <form class="lg:flex mb-2 gap-3" action="/todos" method="post">
         <input type="hidden" name="_csrf" value=<%= csrfToken %>>
-        <input type="text" class="form-control flex-none mb-2 w-full lg:w-80" name="title" id="title" placeholder="What's next?" required>
-        <input type="date" class="form-control flex-none mb-2 w-full lg:w-80" name="dueDate" id="dueDate" required>
+        <input type="text" class="form-control flex-none mb-2 w-full lg:w-80" name="title" id="title" placeholder="What's next?">
+        <input type="date" class="form-control flex-none mb-2 w-full lg:w-80" name="dueDate" id="dueDate">
         <button class="btn btn-success bg-green-500 flex-none mb-2 w-full lg:w-24 text-gray-100" type="submit">Add</button>
       </form>
     </div>

@@ -200,10 +200,15 @@ app.get(
   }
 );
 
-app.post(
-  "/todos",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
+app.post("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    if (request.body.title.length == 0) {
+      request.flash("error", "Title can not be empty!");
+      return response.redirect("/todos");
+    }
+    if (request.body.dueDate.length == 0) {
+      request.flash("error", "Due date can not be empty!");
+      return response.redirect("/todos");
+    }
     console.log("creating new todo", request.body);
     console.log(request.user);
     try {
