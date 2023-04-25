@@ -7,7 +7,7 @@
     "start": "concurrently \"nodemon -e js,ejs\" \"wait-on http://localhost:3000 && start http://localhost:3000\"",
     "start:prod": "node index.js",
     "pretest": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest"
   },
   "lint-staged": {
     "*.js": [
