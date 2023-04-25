@@ -14,6 +14,9 @@ module.exports = {
       firstName: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+            notNull: true,
+        },
       },
       lastName: {
         type: Sequelize.STRING,
@@ -21,10 +24,17 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+            notNull: true,
+        },
         unique: true,
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            notNull: true,
+        },
       },
       createdAt: {
         allowNull: false,

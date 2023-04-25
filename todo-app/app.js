@@ -16,6 +16,8 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 //const user = require("./models/user");
 const { error } = require("console");
+const flash = require("connect-flash");
+
 const saltRounds = 10;
 
 app.use(
@@ -27,6 +29,13 @@ app.use(
   })
 );
 
+app.set("views", path.join(__dirname, "views"));
+app.use(flash());
+app.use(function(request, response, next) {
+  response.locals.messages = request.flash();
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
@@ -37,14 +46,17 @@ passport.use(
     },
     (username, password, done) => {
       User.findOne({ where: { email: username } })
-        .then(async (user) => {
-          const result = await bcrypt.compare(password, user.password);
-          if (result) return done(null, user);
-          else return done("Invalid Password!");
-        })
-        .catch((error) => {
-          return done("Invalid User");
-        });
+      .then(async function (user) {
+        const result = await bcrypt.compare(password, user.password);
+        if (result) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Invalid password" });
+        }
+      })
+      .catch((error) => {
+        return done(null, false, { message: "Unknown User, Register First!" });
+      });
     }
   )
 );
@@ -113,15 +125,30 @@ app.get("/login", async (request, response) => {
   response.render("login", { csrfToken: request.csrfToken() });
 });
 
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  async (request, response) => {
+app.post("/login", 
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  function (request, response) {
+    console.log(request.user);
     response.redirect("/todos");
   }
 );
 
-app.post("/signup", async (request, response) => {
+app.post("/signup", async (request, response, done) => {
+  if (request.body.email.length == 0) {
+    request.flash("error", "Email can not be empty!");
+    return response.redirect("/signup");
+  }
+  if (request.body.firstName.length == 0) {
+    request.flash("error", "First name can not be empty!");
+    return response.redirect("/signup");
+  }
+  if (request.body.password.length < 4) {
+    request.flash("error", "Password length should be minimun 4");
+    return response.redirect("/signup");
+  }
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log(hashedPwd);
 
@@ -132,14 +159,15 @@ app.post("/signup", async (request, response) => {
       email: request.body.email,
       password: hashedPwd,
     });
+    console.log(user);
     request.logIn(user, (err) => {
       //console.log(user);
-      if (err) console.log("error!!!!!!!");
       response.redirect("/todos");
     });
   } catch (error) {
     console.log(error);
-    return response.status(422).json(error);
+    request.flash("error", error.message);
+    return response.redirect("/signup");
   }
 });
 

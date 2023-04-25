@@ -7,7 +7,8 @@
     "start": "concurrently \"nodemon -e js,ejs\" \"wait-on http://localhost:3000 && start http://localhost:3000\"",
     "start:prod": "node index.js",
     "pretest": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.js": [
@@ -20,6 +21,7 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "connect-ensure-login": "^0.1.1",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "csrf": "^3.1.0",
     "csurf": "^1.11.0",

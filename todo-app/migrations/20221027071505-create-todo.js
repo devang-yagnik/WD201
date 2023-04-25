@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 "use strict";
+
+const { sequelize } = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -15,12 +18,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          notNull: true,
-          len: 5,
+            notNull: true,
+            len: 5,
         },
       },
       dueDate: {
         type: Sequelize.DATEONLY,
+        allowNull: false,
+        validate: {
+            notNull: true,
+        },
       },
       completed: {
         type: Sequelize.BOOLEAN,

@@ -20,14 +20,24 @@
     <h2 class="h2 font-semibold p-1 m-4">Register as a new User</h2> 
     <form action="/signup" method="post">
       <input type="hidden" name="_csrf" value=<%= csrfToken %>>
-      <input type="text" name="firstName" placeholder="First Name" class="block rounded w-full m-auto mb-3 p-3" required>
-      <input type="text" name="lastName" placeholder="Last Name" class="block rounded w-full m-auto mb-3 p-3" required>
+      <input type="text" name="firstName" placeholder="First Name" class="block rounded w-full m-auto mb-3 p-3">
+      <input type="text" name="lastName" placeholder="Last Name" class="block rounded w-full m-auto mb-3 p-3">
       <input type="email" name="email" placeholder="Email ID" class="invalid:border-pink-500 invalid:text-pink-600
-      focus:invalid:border-pink-500 focus:invalid:ring-pink-500 block rounded w-full m-auto mb-3 p-3" required>
-      <input type="text" name="password" placeholder="Password" class="block rounded w-full m-auto mb-3 p-3" required>
+      focus:invalid:border-pink-500 focus:invalid:ring-pink-500 block rounded w-full m-auto mb-3 p-3">
+      <input type="text" name="password" placeholder="Password" class="block rounded w-full m-auto mb-3 p-3">
       <button type="submit" class="bg-green-500 hover:bg-green-600 rounded p-2 w-full my-2 text-gray-100">Sign Up</button>
     </form>
   </main>
+
+  <% if(messages && messages.error && messages.error.length > 0)  { %>
+    <% for(var i=0; i<messages.error.length; i++) { %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-3 mt-0 py-2 m-auto rounded relative text-center" role="alert">
+        <strong class="font-bold">Holy smokes!</strong>
+        <span class="block sm:inline"><%= messages.error[i] %></span>
+      </div>
+    <% } %>
+  <% } %>
+
   <footer class="bg-teal-200">
     <%- include("footer.ejs") %>
   </footer>
