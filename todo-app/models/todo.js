@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
 
-    static addTodo({ title, dueDate }) {
-      return this.create({ title, dueDate, completed: false });
+    static addTodo({ title, dueDate, userId }) {
+      return this.create({ title, dueDate, completed: false, userId });
     }
 
     static async getTodoList() {
@@ -24,24 +24,28 @@ module.exports = (sequelize, DataTypes) => {
     };
     
 
-    static async getCompletedTodos() {
-      return this.findAll({
-        where: { completed: true },
-        order: [['id', 'ASC']],
-      });
-    }
-
-    static async getOverdueTodos() {
+    static async getCompletedTodos(userId) {
       return this.findAll({
         where: {
-          dueDate: { [Op.lt]: new Date() },
-          completed: false,
+          completed: true,
+          userId,
         },
         order: [['id', 'ASC']],
       });
     }
 
-    static async getDueTodayTodos() {
+    static async getOverdueTodos(userId) {
+      return this.findAll({
+        where: {
+          dueDate: { [Op.lt]: new Date() },
+          completed: false,
+          userId,
+        },
+        order: [['id', 'ASC']],
+      });
+    }
+
+    static async getDueTodayTodos(userId) {
       const today = new Date();
       return this.findAll({
         where: {
@@ -50,16 +54,18 @@ module.exports = (sequelize, DataTypes) => {
             [Op.lt]: new Date(today.getTime() + 24 * 60 * 60 * 1000),
           },
           completed: false,
+          userId,
         },
         order: [['id', 'ASC']],
       });
     }
 
-    static async getDueLaterTodos() {
+    static async getDueLaterTodos(userId) {
       return this.findAll({
         where: {
           dueDate: { [Op.gt]: new Date() },
           completed: false,
+          userId,
         },
         order: [['id', 'ASC']],
       });

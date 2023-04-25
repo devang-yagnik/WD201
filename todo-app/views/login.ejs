@@ -16,10 +16,15 @@
   <header class="md:flex bg-teal-200">
     <%- include("header.ejs") %>
   </header>
-  <main class="m-auto p-3 bg-secondary-subtle rounded">   
-    <h2 class="h2 font-semibold p-1 m-2">Welcome to the TO-DO Manager</h2>
-    <h3 class="h5 font-light m-3">New Here? <a href="/signup" class="text-green-600">Sign Up</a></h3>
-    <h3 class="h5 font-light m-3">Already have an Account? <a href="/todos" class="text-green-600">Sign In</a></h3>
+  <main class="m-auto p-3 bg-secondary-subtle rounded">  
+    <h2 class="h2 font-semibold p-1 m-5">Sign In</h2> 
+    <form action="/login" method="post" class="w-80">
+      <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+      <input type="email" name="email" placeholder="Username/Email ID" class="invalid:border-pink-500 invalid:text-pink-600
+      focus:invalid:border-pink-500 focus:invalid:ring-pink-500 block rounded w-full m-auto mb-3 p-3" required>
+      <input type="text" name="password" placeholder="Password" class="block rounded w-full m-auto mb-3 p-3" required>
+      <button type="submit" class="bg-green-500 hover:bg-green-600 rounded p-2 w-full my-2 text-gray-100">Sign In</button>
+    </form>
   </main>
   <footer class="bg-teal-200">
     <%- include("footer.ejs") %>
