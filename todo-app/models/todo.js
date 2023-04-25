@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-'use strict';
-const { Model, Op } = require('sequelize');
+"use strict";
+const { Model, Op } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
@@ -17,12 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll();
     }
 
-    setCompletionStatus = async function(completed) {
+    setCompletionStatus = async function (completed) {
       this.completed = completed;
       await this.save();
-      return this
+      return this;
     };
-    
 
     static async getCompletedTodos(userId) {
       return this.findAll({
@@ -30,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
           completed: true,
           userId,
         },
-        order: [['id', 'ASC']],
+        order: [["id", "ASC"]],
       });
     }
 
@@ -41,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
           completed: false,
           userId,
         },
-        order: [['id', 'ASC']],
+        order: [["id", "ASC"]],
       });
     }
 
@@ -56,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
           completed: false,
           userId,
         },
-        order: [['id', 'ASC']],
+        order: [["id", "ASC"]],
       });
     }
 
@@ -67,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
           completed: false,
           userId,
         },
-        order: [['id', 'ASC']],
+        order: [["id", "ASC"]],
       });
     }
   }
@@ -80,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Todo',
+      modelName: "Todo",
     }
   );
 

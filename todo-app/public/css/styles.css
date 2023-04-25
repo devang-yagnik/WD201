@@ -1,8 +1,8 @@
-body{
+body {
   background-color: white;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
-.todo-item:hover .trash{
+.todo-item:hover .trash {
   display: block;
 }
 #loading-overlay {
@@ -28,5 +28,7 @@ body{
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
